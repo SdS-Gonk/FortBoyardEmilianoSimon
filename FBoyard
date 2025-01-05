@@ -1,0 +1,244 @@
+import random
+clef=0
+i=0
+players=[0,0,0]
+
+def fouras():
+    global clef
+    x="Le Carré"
+    x2="le carré"
+    y="Carré"
+    y2="carré"
+    print("Voici l'énigme.")
+    print("Il peut être fait de soie,")
+    print("Ou encore de chocolat.")
+    print("Ce parfait quadrilatère,")
+    print("Est une belle main au poker.")
+    reponse=input("Qui est-il ? ")
+    if reponse==x or reponse==x2 or reponse==y or reponse==y2:
+        print("Bravo, c'était bien Le Carré! Voici une clef en récompense.")
+        clef+=1
+    else:
+        print("Mauvaise réponse, il fallait dire Le Carré.")
+
+
+def Nim():
+    global clef
+    y = 21
+    z=None
+    print("il y a 21 barres,choisissez si vous en retirez 1,2,ou 3 de la pile. Vous affronterez l'un des grands maitres de la tour, bonne chance!")
+    while y > 1:
+        joueur=int(input("choisissez combien de barres vous retirez: "))
+        y-=joueur
+        print("il reste ", y, " barres")
+        if y==1:
+            print("c'est gagné, bravo!! Voici une clef en récompense.")
+            clef+=1
+        elif joueur==1:
+            z=3
+        elif joueur==3:
+            z=1
+        else:
+            z=2
+        g=random.randint(1,10)
+        if g==7:
+            z=random.randint(1,3)
+        y-=z
+        print("Le maitre retire ",z," barres, il en reste ",y,)
+        if y==1:
+            print("C'est perdu, dommage. Vous aurez plus de chance la prochaine fois.")
+
+
+def pileface():
+    global clef
+    chance = input("pile ou face? ")
+    bob = random.choices(['pile', "face"])
+    chance = [chance]
+    if bob == chance:
+        print("c'est gagné, bravo!! Voici une clef en récompense.")
+        clef+=1
+    else:
+        print("Perdu, la réponse était ", bob)
+        print("A LA FOSSE AU LIONS")
+
+
+def HUIT():
+    global clef
+    print("calculez le résultat:")
+    print("8+8*8*8*8*8*8*8*8*8*8*8*8*8*0*8*8*8*8*8*8*8*8*8*8*8*8*8*8*8*8*8*8*8")
+    z=int(input())
+    if z==8:
+        print("c'est gagné, bravo!! Voici une clef en récompense.")
+        clef += 1
+    else:
+        print("C'est perdu, dommage. Vous aurez plus de chance la prochaine fois.")
+
+
+def Coffre():
+    global clef
+    recomp=0
+    bim=["rien","mim","cl"]
+    print("Vous avez 3 coffres devant vous, un est vide, un autre possède un morceau de clef et le dernier vous fait perdre l'épreuve, bonne chance!")
+    while recomp!=3:
+        random.shuffle(bim)
+        z=int(input("Coffre 1,2 ou 3? "))
+        if bim[z-1]=="mim":
+            print("C'est perdu, dommage. Vous aurez plus de chance la prochaine fois.")
+            return
+        elif bim[z-1]=="cl":
+            recomp+=1
+            print("Bravo, vous avez trouvé un morceau de clef, plus que ",3-recomp,"!")
+        else:
+            print("il n'y avait rien, on rééssaie!")
+    if recomp==3:
+        print("c'est gagné, bravo!! Voici une clef en récompense.")
+        clef+=1
+
+
+def Diable():
+    global clef
+    print("Timothée veut acheter des Schoko-bons a 3,90€. Il lui manque 3€ pour pouvoir les acheter,")
+    print("il décide donc de vendre son âme au diable pour obtenir la somme manquante.")
+    print("Le diable refuse de dépenser plus d'1,20€ pour son âme. Quel est le taux de réduction de l'âme de Timothée proposé par le Diable? ")
+    z=int(input("écrivez votre réponse sous la forme numérique:14%=14,27%=27, etc"))
+    if z==40:
+        print("c'est gagné, bravo!! Voici une clef en récompense.")
+        clef+=1
+    else:
+        print("C'est perdu, dommage. Vous aurez plus de chance la prochaine fois.")
+
+
+def Deux():
+    x=random.randint(1,17)
+    if x==1:
+        print("Quelle est la ",x,"ère puissance de 2?")
+    else:
+        print("Quelle est la ",x,"ème puissance de 2?")
+    g=int(input())
+    if g==2**x:
+        print("c'est gagné, bravo!! Voici une clef en récompense.")
+        clef += 1
+    else:
+        print("C'est perdu, dommage. Vous aurez plus de chance la prochaine fois.")
+
+
+def treasure_room():
+    with open('C:\Users\simon\OneDrive\Bureau\TRClues.json', 'r') as file:
+        tv_game()
+    years = list(tv_game.keys())
+    year = random.choice(years)
+    programs = tv_game[year]
+    show = random.choice(programs)
+    clues = show['clues']
+    code_word = show['codeword']
+    print("Vous voici désormais dans la salle des coffres.")
+    print("Il vous faut deviner le code, qui est un mot.")
+    print("Trouvez le code grâce aux indices à votre disposition.")
+    print("Voici les 3 premiers indices:")
+    for i in range(min(3, len(clues))):
+        print(f"Clue {i + 1}: {clues[i]}")
+    attempts = 3
+    answer_correct = False
+    while attempts > 0:
+        player_answer = input("Tapez le code: ").strip()
+        if player_answer.lower() == code_word.lower():
+            answer_correct = True
+            print("C'est la bonne réponse !")
+            break
+        else:
+            attempts -= 1
+            if attempts > 0:
+                print(f"Ce n'est pas la bonne réponse. Il vous reste {attempts} essais.")
+                if len(clues) > 3:
+                    print(f"Voici un autre indice: {clues[3]}")
+                    clues.pop(3)
+                else:
+                    print("Vous êtes à court d'indices.")
+            else:
+                print(f"Vous avez échoué. La réponse était: {code_word}")
+    if answer_correct:
+        print("Vous avez trouvé le célèbre trésor du Fort Boyard.")
+    else:
+        print("Malheureusement, votre aventure a été infructueuse, vous avez échoué à récupérer le trésor.")
+
+
+while i<=2:
+    players[i] = input("quel est le nom du joueur ?")
+    i+=1
+print(players)
+if clef == 3:
+    print("félicitations, vous avez le nombre de clefs nécessaire")
+    treasure_room()
+else:
+    print("C'est au tour de", players[random.randint(0,2)]," de jouer!")
+    HUIT()
+    if clef == 1:
+        print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+    else:
+        print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+if clef==3:
+    print("félicitations, vous avez le nombre de clefs nécessaire")
+    treasure_room()
+else:
+    print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+    Coffre()
+    if clef == 1:
+        print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+    else:
+        print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+if clef==3:
+    print("félicitations, vous avez le nombre de clefs nécessaire")
+    treasure_room()
+else:
+    print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+    fouras()
+    if clef==3:
+        print("félicitations, vous avez le nombre de clefs nécessaire")
+        treasure_room()
+    else:
+        if clef==1:
+            print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+        else:
+            print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+        print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+        Diable()
+        if clef==3:
+            print("félicitations, vous avez le nombre de clefs nécessaire")
+            treasure_room()
+        else:
+            if clef == 1:
+                print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+            else:
+                print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+            print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+            Nim()
+            if clef==3:
+                print("félicitations, vous avez le nombre de clefs nécessaire")
+                treasure_room()
+            else:
+                if clef == 1:
+                    print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+                else:
+                    print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+                print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+                Deux()
+                if clef==3:
+                    print("félicitations, vous avez le nombre de clefs nécessaire")
+                    treasure_room()
+                else:
+                    if clef == 1:
+                        print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+                    else:
+                        print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+                    print("C'est au tour de", players[random.randint(0, 2)], " de jouer!")
+                    pileface()
+                    if clef==3:
+                        print("félicitations, vous avez le nombre de clefs nécessaire")
+                        treasure_room()
+                    else:
+                        if clef == 1:
+                            print("vous avez ", clef, "clef, plus que ", 3 - clef, " avant la fin")
+                        else:
+                            print("vous avez ", clef, "clefs, plus que ", 3 - clef, " avant la fin")
+                        print("C'était la derniere épreuve, dommage!")
+                        print("Vous avez échoué à atteindre la salle des coffres")
